@@ -27,6 +27,25 @@ unsigned char g_interfaceAlt[MAX_INTS]; /* Global endpoint status arrays */
 unsigned short g_epStatusOut[MAX_EPS];
 unsigned short g_epStatusIn[MAX_EPS];
 
+#define ENABLE_MICROSOFT_OS_DESCRIPTOR 1
+
+#if ENABLE_MICROSOFT_OS_DESCRIPTOR
+
+#define MICROSOFT_OS_STRING_DESCRIPTOR 0xEE
+
+/* delete HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\usbflags\20B100110112\osvs
+ * http://irq5.io/2016/12/22/raspberry-pi-zero-as-multiple-usb-gadgets
+ * (0112 is BCD device version)
+ */
+unsigned char g_microsoft_os_string_descriptor[18] = {
+  0x12, USB_DESCTYPE_STRING,
+  'M', 0, 'S', 0, 'F', 0, 'T', 0, '1', 0, '0', 0, '0', 0,
+  0xBE, // bMS_VendorCode
+  0x01
+};
+
+#endif
+
 #pragma unsafe arrays
 XUD_Result_t USB_GetSetupPacket(XUD_ep ep_out, XUD_ep ep_in, USB_SetupPacket_t &sp)
 {
@@ -419,6 +438,15 @@ XUD_Result_t USB_StandardRequests(XUD_ep ep_out, XUD_ep ep_in,
                                 /* Send back string */
                                 return XUD_DoGetRequest(ep_out, ep_in, buffer, datalength + 2, sp.wLength);
                             } /* if(stringID < stringDescs_length) */
+#if ENABLE_MICROSOFT_OS_DESCRIPTOR
+                            else if ((sp.wValue & 0xFF) == MICROSOFT_OS_STRING_DESCRIPTOR)
+                            {
+			        printhexln(sp.wValue);
+                                /* assume rather than assert that wLength same as OS descriptor length rather */
+                                return XUD_DoGetRequest(ep_out, ep_in, g_microsoft_os_string_descriptor,
+                                                        sizeof(g_microsoft_os_string_descriptor), sp.wLength);
+                            }
+#endif
 
                             break;
                     }
