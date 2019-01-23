@@ -112,6 +112,7 @@
     <release parenthash = "2f1556051f9c12891ca46932b46938dd05ebe331" version = "1.3.8beta0" githash = "acbe23ccdbdd630e6e06020f9e844f9f862a7f24"></release>
     <release parenthash = "b9a573ab03bb899f70c0ebb03a72aa2bff6af8f0" version = "1.3.8beta1" githash = "c908330f063e343df42f7a9289583ea3f4bccbbd"></release>
     <release parenthash = "55527e8b69d5fba16bc089016bf51cba9ba22ce7" version = "1.3.8rc0"></release>
+    <xsoftip_exclude>module_usb_device</xsoftip_exclude>
     <subpartnumber>XM-002852-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
