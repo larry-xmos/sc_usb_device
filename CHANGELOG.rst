@@ -4,14 +4,9 @@ sc_usb_device Change Log
 1.3.8
 -----
 
-
   * Changes to dependencies:
 
-    - sc_util: 1.0.5rc0 -> 1.0.6rc0
-
-      + xCORE-200 compatibility fixes to module_trycatch
-
-    - sc_xud: 2.3.2rc0 -> 2.4.0rc0
+    - sc_xud: 2.3.2rc0 -> 2.6.0rc1
 
       + RESOLVED:   Intermittent initialisation issues with xCORE-200.
       + RESOLVED:   SETUP transaction data CRC not properly checked
@@ -21,6 +16,18 @@ sc_usb_device Change Log
       + RESOLVED:   Receive of short packets sometimes prematurely ended
       + RESOLVED:   Data PID not reset to DATA0 in ClearStallByAddr() (used on ClearFeature(HALT)
         request from host) (#17092)
+      + RESOLVED:   Initialisation failure on U-series devices
+      + RESOLVED:   Issue referenced as #11813 in 2.4.2 for XS1 devices
+      + CHANGE:     Using sc_usb 1.0.4rc0 in maintenance release
+      + RESOLVED:   xCORE-200 USB phy parameters tuned for optimal Tx performance resulting
+                    in much improved TX eye diagram and compliance test results
+      + CHANGE:     VBUS connection to xCORE-200 no longer required when using XUD_PWR_BUS i.e. 
+                    for bus-powered devices. This removes the need to any protection circuitry and 
+                    allows for a reduced BOM.
+                    Note, VBUS should still be present for self powered devices in order to pass USB
+                    compliance tests.
+      + RESOLVED:   Device might hang during resume if host follows resume signality with activity 
+                    after a time close to specified minimum of 1.33us (#11813)
 
 1.3.7
 -----
